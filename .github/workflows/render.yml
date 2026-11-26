@@ -14,8 +14,8 @@ jobs:
         with:
           node-version: 20
       - run: npm install
-      - run: npx remotion render src/index.ts SegitigaMisteriusEp2 out/episode2.mp4
+      - run: npx remotion render src/index.ts SegitigaMisteriusEp3 out/episode3.mp4
       - uses: actions/upload-artifact@v4
         with:
-          name: episode2
-          path: out/episode2.mp4
+          name: episode3
+          path: out/episode3.mp4
