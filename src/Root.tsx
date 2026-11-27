@@ -2,6 +2,8 @@ import React from 'react';
 import { Composition } from 'remotion';
 import { SegitigaMisterius, FPS, TOTAL_FRAMES } from './Video';
 import { Episode3, TOTAL_FRAMES_EP3 } from './Video3';
+import { Prolog, TOTAL_FRAMES_PROLOG } from './Prolog';
+import { CastPreview } from './Cast';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -18,6 +20,22 @@ export const RemotionRoot: React.FC = () => {
         id="SegitigaMisteriusEp3"
         component={Episode3}
         durationInFrames={TOTAL_FRAMES_EP3}
+        fps={30}
+        width={1280}
+        height={720}
+      />
+      <Composition
+        id="SegitigaMisteriusProlog"
+        component={Prolog}
+        durationInFrames={TOTAL_FRAMES_PROLOG}
+        fps={30}
+        width={1280}
+        height={720}
+      />
+      <Composition
+        id="CastPreview"
+        component={CastPreview}
+        durationInFrames={1}
         fps={30}
         width={1280}
         height={720}
