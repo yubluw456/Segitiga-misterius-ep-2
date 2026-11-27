@@ -7,7 +7,29 @@ export const LINE = sec(6); // 1 slot dialog = 6 detik
 export const SHOW = sec(3); // bubble tampil 3 detik (sisanya jeda sampai slot 6 detik habis)
 export const FONT = "'Baloo 2', 'Comic Sans MS', 'Trebuchet MS', sans-serif";
 
-export type Name = 'Ara' | 'Hirzi' | 'Hessam' | 'S' | 'Yusuf' | 'Udil' | 'Rakha' | 'Naura';
+export type Name =
+  | 'Ara'
+  | 'Hirzi'
+  | 'Hessam'
+  | 'S'
+  | 'Yusuf'
+  | 'Udil'
+  | 'Rakha'
+  | 'Naura'
+  | 'Raihan'
+  | 'Royan'
+  | 'Rasya'
+  | 'Niko'
+  | 'Febri'
+  | 'Hana'
+  | 'Riri'
+  | 'Azka'
+  | 'Rifky'
+  | 'Hafizh'
+  | 'Syauqi'
+  | 'Aril'
+  | 'Khaliq'
+  | 'Nasita';
 export type Expr =
   | 'neutral'
   | 'happy'
@@ -27,31 +49,56 @@ export type Line = {
   e?: Partial<Record<Name, Expr>>;
   dur?: number; // panjang slot (default 6 detik)
   big?: boolean; // bubble teriak
+  thought?: boolean; // dialog dalam hati
   zs?: [number, number]; // zoom kamera awal/akhir
 };
 
 const SHIFT: Record<Pose, number> = { stand: 0, sit: 55, floor: 98 };
 
-export const CHARS: Record<
-  Name,
-  {
-    skin: string;
-    hair: string;
-    size: number;
-    girl: boolean;
-    glasses?: string;
-    sw?: number;
-    hijab?: { fill: string; stroke: string };
-  }
-> = {
+type CharDef = {
+  skin: string;
+  hair: string;
+  size: number;
+  girl: boolean;
+  glasses?: string;
+  glassShape?: 'round' | 'square';
+  sw?: number; // lebar bahu
+  taper?: number; // 1 = lurus, <1 = bentuk V
+  armW?: number; // tebal lengan
+  hijab?: { fill: string; stroke: string };
+  sleeve?: string; // warna lengan (jas / jubah)
+  long?: boolean; // lengan panjang (jas lab / jubah)
+  coat?: 'lab' | 'robe';
+};
+
+const WHITE = '#f8e1cc'; // kulit putih
+const TAN = '#dc9f7e'; // kulit seperti Yusuf
+const HIJAB_W = { fill: '#ffffff', stroke: '#cbd5e1' };
+
+export const CHARS: Record<Name, CharDef> = {
   Ara: { skin: '#f3cfae', hair: '#3a2a20', size: 1.1, girl: true, hijab: { fill: '#f4b6c9', stroke: '#e58fae' } },
   Hirzi: { skin: '#f1c9a5', hair: '#1f1f1f', size: 1.3, girl: false },
   Hessam: { skin: '#f3d0ad', hair: '#2b2118', size: 1.3, girl: false, glasses: '#111827' },
   S: { skin: '#f6d5b8', hair: '#3b2a20', size: 1.22, girl: true, glasses: '#9d174d' },
-  Yusuf: { skin: '#dc9f7e', hair: '#151515', size: 1.45, girl: false }, // lebih cerah & kemerahan
+  Yusuf: { skin: TAN, hair: '#151515', size: 1.45, girl: false },
   Udil: { skin: '#f1c9a5', hair: '#1a1a1a', size: 1.28, girl: false, glasses: '#111827' },
-  Rakha: { skin: '#e8bd98', hair: '#151515', size: 1.3, girl: false, sw: 1.25 }, // bahu lebar
-  Naura: { skin: '#f6d5b8', hair: '#3a2a20', size: 1.18, girl: true, glasses: '#374151', hijab: { fill: '#ffffff', stroke: '#cbd5e1' } },
+  Rakha: { skin: '#e8bd98', hair: '#151515', size: 1.3, girl: false, sw: 1.25 },
+  Naura: { skin: '#f6d5b8', hair: '#3a2a20', size: 1.18, girl: true, glasses: '#374151', hijab: HIJAB_W },
+  // ---- karakter baru (Episode 4) ----
+  Raihan: { skin: TAN, hair: '#1a1a1a', size: 1.3, girl: false },
+  Royan: { skin: WHITE, hair: '#1a1a1a', size: 1.5, girl: false },
+  Rasya: { skin: WHITE, hair: '#1a1a1a', size: 1.5, girl: false, sw: 1.25 },
+  Niko: { skin: WHITE, hair: '#111111', size: 1.45, girl: false, sw: 0.85 },
+  Febri: { skin: TAN, hair: '#2a2a2a', size: 1.3, girl: false, sw: 1.25 },
+  Hana: { skin: WHITE, hair: '#3a2a20', size: 1.26, girl: true, glasses: '#e8d5a3', hijab: HIJAB_W },
+  Riri: { skin: WHITE, hair: '#3a2a20', size: 1.3, girl: true, hijab: HIJAB_W },
+  Azka: { skin: WHITE, hair: '#1f1f1f', size: 1.3, girl: false, glasses: '#111827', coat: 'lab', long: true, sleeve: '#ffffff' },
+  Rifky: { skin: WHITE, hair: '#1f1f1f', size: 1.5, girl: false, coat: 'robe', long: true, sleeve: '#bfdbfe' },
+  Hafizh: { skin: '#c98a68', hair: '#1f1f1f', size: 1.45, girl: false, sw: 1.5, taper: 0.7, armW: 20 },
+  Syauqi: { skin: WHITE, hair: '#1a1a1a', size: 1.58, girl: false, glasses: '#111827', glassShape: 'square' },
+  Aril: { skin: WHITE, hair: '#1a1a1a', size: 1.5, girl: false, sw: 1.35 },
+  Khaliq: { skin: TAN, hair: '#1a1a1a', size: 1.5, girl: false, sw: 1.35 },
+  Nasita: { skin: WHITE, hair: '#3a2a20', size: 1.26, girl: true, hijab: { fill: '#93c5fd', stroke: '#60a5fa' } },
 };
 
 export const BUBBLE_COLOR: Record<Name, string> = {
@@ -63,6 +110,20 @@ export const BUBBLE_COLOR: Record<Name, string> = {
   Udil: '#fde68a',
   Rakha: '#fca5a5',
   Naura: '#a5f3fc',
+  Raihan: '#fdba74',
+  Royan: '#bae6fd',
+  Rasya: '#fecaca',
+  Niko: '#c7d2fe',
+  Febri: '#fed7aa',
+  Hana: '#fbcfe8',
+  Riri: '#ddd6fe',
+  Azka: '#a7f3d0',
+  Rifky: '#bfdbfe',
+  Hafizh: '#fcd34d',
+  Syauqi: '#99f6e4',
+  Aril: '#d9f99e',
+  Khaliq: '#fda4af',
+  Nasita: '#a5d8ff',
 };
 
 export const headTop = (n: Name, p: Place) =>
@@ -82,6 +143,7 @@ export const focus = (t: number, n: Name, p: Place, z: number): CamKey => ({
 });
 
 const ease = (p: number) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
+const CAM_SPEED = 2.4; // makin besar = kamera makin cepat sampai di tujuan
 
 export function camAt(f: number, keys: CamKey[]): Cam {
   let a = keys[0];
@@ -94,7 +156,7 @@ export function camAt(f: number, keys: CamKey[]): Cam {
       if (f >= keys[i].t && f < keys[i + 1].t) {
         a = keys[i];
         b = keys[i + 1];
-        p = ease((f - a.t) / (b.t - a.t));
+        p = ease(Math.min(1, ((f - a.t) / (b.t - a.t)) * CAM_SPEED));
         break;
       }
     }
@@ -118,16 +180,28 @@ export const CamG: React.FC<{ cam: Cam; sx?: number; sy?: number; children: Reac
   </g>
 );
 
-export const lineStarts = (lines: Line[], intro: number) => {
+// jeda antar bubble (mode smart): pembicara sama = 2 detik, ganti pembicara = 3 detik
+export const GAP_SAME = sec(2);
+export const GAP_CHANGE = sec(3);
+export const slotLen = (lines: Line[], i: number, smart: boolean) => {
+  const l = lines[i];
+  if (l.dur !== undefined) return l.dur;
+  if (!smart) return LINE;
+  const nx = lines[i + 1];
+  return SHOW + (nx && nx.text && nx.who === l.who ? GAP_SAME : GAP_CHANGE);
+};
+export const lineStarts = (lines: Line[], intro: number, smart = false) => {
   let s = intro;
-  return lines.map((l) => {
+  return lines.map((_, i) => {
     const a = s;
-    s += l.dur ?? LINE;
+    s += slotLen(lines, i, smart);
     return a;
   });
 };
+export const totalLen = (lines: Line[], intro: number, smart = false) =>
+  lines.reduce((a, _, i) => a + slotLen(lines, i, smart), intro);
 
-// kamera otomatis menuju pembicara (pelan-pelan mendekat selama dia bicara)
+// kamera otomatis menuju pembicara
 export function autoKeys(
   lines: Line[],
   intro: number,
@@ -135,15 +209,19 @@ export function autoKeys(
   first: CamKey,
   zA = 1.35,
   zB = 1.6,
+  smart = false,
 ): CamKey[] {
-  const st = lineStarts(lines, intro);
+  const st = lineStarts(lines, intro, smart);
   const keys: CamKey[] = [first];
+  let last: Name | null = null;
   lines.forEach((l, i) => {
     const p = places[l.who];
     if (!l.text || !p) return;
     const [a, b] = l.zs ?? [zA, zB];
-    keys.push(focus(st[i], l.who, p, a));
-    keys.push(focus(st[i] + SHOW, l.who, p, b));
+    const sameRun = smart && last === l.who;
+    if (!sameRun) keys.push(focus(st[i], l.who, p, a));
+    keys.push(focus(st[i] + SHOW, l.who, p, sameRun ? Math.max(b, keys[keys.length - 1].z) : b));
+    last = l.who;
   });
   return keys;
 }
@@ -156,16 +234,16 @@ export function bubbleAt(cam: Cam, n: Name, p: Place) {
 }
 
 /* ============================== DIALOG ============================== */
-export function useLine(lines: Line[], intro: number) {
+export function useLine(lines: Line[], intro: number, smart = false) {
   const f = useCurrentFrame();
-  const st = lineStarts(lines, intro);
+  const st = lineStarts(lines, intro, smart);
   let idx = -1;
   st.forEach((s, i) => {
     if (f >= s) idx = i;
   });
   const cur = idx >= 0 ? lines[idx] : undefined;
   const within = idx >= 0 ? f - st[idx] : 0;
-  const dur = cur ? cur.dur ?? LINE : 0;
+  const dur = cur ? slotLen(lines, idx, smart) : 0;
   const active = !!cur && !!cur.text && within < Math.min(SHOW, dur);
   const ex = (n: Name, base: Expr = 'neutral'): Expr => cur?.e?.[n] ?? base;
   return {
@@ -185,7 +263,8 @@ export const Bubble: React.FC<{
   bottom: number;
   within: number;
   big?: boolean;
-}> = ({ who, text, x, bottom, within, big }) => {
+  thought?: boolean;
+}> = ({ who, text, x, bottom, within, big, thought }) => {
   const { fps } = useVideoConfig();
   const pop = spring({ frame: Math.max(0, within), fps, config: { damping: 12, stiffness: 140 } });
   const fadeOut = interpolate(within, [SHOW - 8, SHOW], [1, 0], {
@@ -206,14 +285,15 @@ export const Bubble: React.FC<{
         opacity: Math.min(1, pop * 1.5) * fadeOut,
         maxWidth: 600,
         minWidth: 200,
-        background: '#fff',
-        border: `5px solid ${color}`,
+        background: thought ? '#f5f3ff' : '#fff',
+        border: `5px ${thought ? 'dashed' : 'solid'} ${color}`,
         borderRadius: 28,
         padding: '22px 28px 18px',
         fontSize: big ? 54 : 36,
         fontWeight: big ? 900 : 800,
+        fontStyle: thought ? 'italic' : 'normal',
         lineHeight: 1.2,
-        color: big ? '#b91c1c' : '#1f2937',
+        color: big ? '#b91c1c' : thought ? '#4c1d95' : '#1f2937',
         textAlign: 'center',
         boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
         fontFamily: FONT,
@@ -242,7 +322,7 @@ export const Bubble: React.FC<{
           left: `calc(50% + ${x - cx - 14}px)`,
           width: 28,
           height: 28,
-          background: '#fff',
+          background: thought ? '#f5f3ff' : '#fff',
           borderRight: `5px solid ${color}`,
           borderBottom: `5px solid ${color}`,
           transform: 'rotate(45deg)',
@@ -309,16 +389,14 @@ export const Stage: React.FC<{ children: React.ReactNode; style?: React.CSSPrope
 
 export const Fade: React.FC<{ children: React.ReactNode; inF?: number; outF?: number }> = ({
   children,
-  inF = 12,
-  outF = 12,
+  inF = 5,
+  outF = 5,
 }) => {
   const f = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
-  const o = interpolate(f, [0, inF, durationInFrames - outF, durationInFrames], [0, 1, 1, 0], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-  return <AbsoluteFill style={{ opacity: o }}>{children}</AbsoluteFill>;
+  const a = inF > 0 ? Math.min(1, f / inF) : 1;
+  const b = outF > 0 ? Math.min(1, (durationInFrames - f) / outF) : 1;
+  return <AbsoluteFill style={{ opacity: Math.max(0, Math.min(a, b)) }}>{children}</AbsoluteFill>;
 };
 
 export const Defs: React.FC = () => (
@@ -451,6 +529,12 @@ export type CharProps = {
   frozen?: boolean; // diam total (tanpa animasi)
   armL?: number; // paksa sudut lengan kiri (positif = keluar)
   armR?: number; // paksa sudut lengan kanan (negatif = keluar)
+  lean?: number; // miring badan (derajat), untuk bersandar di dinding
+  crossed?: boolean; // tangan dilipat di dada (gaya cool)
+  outfit?: { top?: string; bottom?: string; sleeves?: 'long' | 'short'; hijab?: string }; // baju bebas (bukan seragam)
+  lookUp?: number; // 0..1 menengadah melihat ke atas
+  headTilt?: number; // miringkan kepala (derajat)
+  triangle?: boolean; // segitiga misterius di hijab
 };
 
 export const Character: React.FC<CharProps> = ({
@@ -468,11 +552,17 @@ export const Character: React.FC<CharProps> = ({
   frozen = false,
   armL,
   armR,
+  lean = 0,
+  crossed = false,
+  outfit,
+  lookUp = 0,
+  headTilt = 0,
+  triangle = false,
 }) => {
   const cf = useCurrentFrame();
   const f = frozen ? 0 : cf;
   const c = CHARS[name];
-  const hj = c.hijab;
+  const hj = outfit?.hijab ? { fill: outfit.hijab, stroke: 'rgba(0,0,0,0.2)' } : c.hijab;
   const sw = c.sw ?? 1;
   const shift = SHIFT[pose];
   const sitting = pose === 'sit';
@@ -494,13 +584,23 @@ export const Character: React.FC<CharProps> = ({
   if (speaking && !walking) angR = -(38 + 22 * gest);
   if (armL !== undefined) angL = armL;
   if (armR !== undefined) angR = armR;
+  if (crossed) {
+    angL = -62;
+    angR = 62;
+  }
 
-  const tilt = speaking ? Math.sin(f * 0.12 + seed) * 2.5 : expr === 'sad' || expr === 'cry' ? 4 : 0;
+  const tilt =
+    (speaking ? Math.sin(f * 0.12 + seed) * 2.5 : expr === 'sad' || expr === 'cry' ? 4 : 0) + headTilt;
   const dip = expr === 'sad' || expr === 'cry' ? 3 : 0;
   const look = lookDir * 5;
-  const pants = c.girl ? '#f8fafc' : '#6b7280';
+  const pants = outfit?.bottom ?? (c.girl ? '#f8fafc' : '#6b7280');
+  const topFill = outfit?.top ?? '#fff';
   const mk = { stroke: '#7f1d1d', strokeWidth: 3, fill: 'none', strokeLinecap: 'round' as const };
   const skirtBottom = onFloor ? -92 : sitting ? -58 : -46;
+  const taper = c.taper ?? 1;
+  const tw = 28 * sw;
+  const bw = tw * taper;
+  const torsoD = `M${-tw},-190 Q${-tw},-202 ${-tw + 12},-202 L${tw - 12},-202 Q${tw},-202 ${tw},-190 L${bw},-118 Q${bw},-106 ${bw - 12},-106 L${-bw + 12},-106 Q${-bw},-106 ${-bw},-118 Z`;
 
   const eye = (s: number) => {
     const cx = s * 15;
@@ -617,6 +717,30 @@ export const Character: React.FC<CharProps> = ({
   };
 
   // rambut dibuat mengikuti lingkar kepala (radius 40 di pusat kepala)
+  const flatHair = (
+    <path d="M-40,-247 A40,40 0 0 1 40,-247 Q36,-268 0,-268 Q-36,-268 -40,-247 Z" fill={c.hair} />
+  );
+  const quiffHair = (
+    <path
+      d="M-40,-247 A40,40 0 0 1 40,-247 Q38,-266 22,-270 Q18,-298 -8,-296 Q-30,-290 -34,-266 Q-40,-258 -40,-247 Z"
+      fill={c.hair}
+    />
+  );
+  const neatHair = (
+    <path
+      d="M-40,-247 A40,40 0 0 1 40,-247 Q34,-264 12,-268 Q-14,-266 -34,-258 Q-40,-254 -40,-247 Z"
+      fill={c.hair}
+    />
+  );
+  const curlyHair = (
+    <g fill={c.hair}>
+      <path d="M-40,-247 A40,40 0 0 1 40,-247 Q36,-262 0,-264 Q-36,-262 -40,-247 Z" />
+      {[0, 1, 2, 3, 4, 5, 6].map((i) => {
+        const a = Math.PI * (1.1 + i * 0.13);
+        return <circle key={i} cx={Math.cos(a) * 38} cy={-247 + Math.sin(a) * 38} r={11} />;
+      })}
+    </g>
+  );
   const hairFront = () => {
     switch (name) {
       case 'Hirzi': // belah tengah
@@ -656,20 +780,77 @@ export const Character: React.FC<CharProps> = ({
             fill={c.hair}
           />
         );
+      case 'Royan':
+        return flatHair;
+      case 'Rasya':
+      case 'Syauqi':
+        return quiffHair;
+      case 'Rifky':
+      case 'Khaliq':
+        return neatHair;
+      case 'Raihan':
+        return curlyHair;
+      case 'Niko': // spiky ala Naruto
+        return (
+          <g fill={c.hair}>
+            <path d="M-40,-247 A40,40 0 0 1 40,-247 Q36,-266 0,-268 Q-36,-266 -40,-247 Z" />
+            <polygon points="-38,-262 -58,-282 -30,-276" />
+            <polygon points="-30,-276 -40,-310 -8,-284" />
+            <polygon points="-12,-284 -6,-316 14,-284" />
+            <polygon points="10,-284 28,-312 34,-278" />
+            <polygon points="30,-276 60,-290 40,-260" />
+            <polygon points="-40,-256 -64,-250 -42,-240" />
+          </g>
+        );
+      case 'Azka': // agak berduri
+        return (
+          <g fill={c.hair}>
+            <path d="M-40,-247 A40,40 0 0 1 40,-247 Q36,-266 0,-268 Q-36,-266 -40,-247 Z" />
+            <polygon points="-30,-272 -34,-292 -16,-278" />
+            <polygon points="-14,-278 -8,-298 6,-278" />
+            <polygon points="6,-278 20,-296 26,-274" />
+            <polygon points="24,-272 42,-286 36,-262" />
+          </g>
+        );
+      case 'Febri': // rambut tipis
+        return <path d="M-34,-262 Q0,-286 34,-262 Q0,-274 -34,-262 Z" fill={c.hair} />;
+      case 'Hafizh': // hampir botak
+        return <path d="M-30,-268 Q0,-284 30,-268 Q0,-276 -30,-268 Z" fill={c.hair} opacity={0.6} />;
+      case 'Aril': // keriting + topi SMA
+        return (
+          <g>
+            {[-1, 1].map((k) => (
+              <circle key={k} cx={k * 38} cy={-254} r={9} fill={c.hair} />
+            ))}
+            <path d="M-43,-268 Q-44,-306 0,-304 Q44,-306 43,-268 Z" fill="#6b7280" stroke="#4b5563" strokeWidth={2} />
+            <path d="M-44,-270 L44,-270 Q48,-264 40,-260 L-40,-260 Q-48,-264 -44,-270 Z" fill="#4b5563" />
+          </g>
+        );
       default:
         return null;
     }
   };
 
+  const aw = c.armW ?? 12;
+  const shortSleeve = !c.girl && !c.long && outfit?.sleeves !== 'long';
+  const sleeveFill = c.sleeve ?? topFill;
+  const sleeveStroke = c.sleeve || outfit ? 'rgba(0,0,0,0.2)' : '#cbd5e1';
   const arm = (s: number, ang: number) => (
     <g key={s} transform={`translate(${s * 29 * sw},-192) rotate(${ang})`}>
-      <rect x={-6} y={-4} width={12} height={74} rx={6} fill="#fff" stroke="#cbd5e1" strokeWidth={2} />
-      <circle cx={0} cy={76} r={8} fill={c.skin} />
+      {shortSleeve ? (
+        <>
+          <rect x={-(aw - 2) / 2} y={20} width={aw - 2} height={52} rx={(aw - 2) / 2} fill={c.skin} stroke="#e0b48f" strokeWidth={1.5} />
+          <rect x={-aw / 2} y={-4} width={aw} height={34} rx={aw / 2} fill={topFill} stroke={sleeveStroke} strokeWidth={2} />
+        </>
+      ) : (
+        <rect x={-aw / 2} y={-4} width={aw} height={74} rx={aw / 2} fill={sleeveFill} stroke={sleeveStroke} strokeWidth={2} />
+      )}
+      <circle cx={0} cy={76} r={8 + (aw - 12) / 4} fill={c.skin} />
     </g>
   );
 
   return (
-    <g transform={`translate(${x},${y}) scale(${c.size * mul})`}>
+    <g transform={`translate(${x},${y}) rotate(${lean}) scale(${c.size * mul})`}>
       {/* kaki */}
       {!onFloor &&
         [-1, 1].map((s) => {
@@ -687,7 +868,7 @@ export const Character: React.FC<CharProps> = ({
                 height={sitting ? 43 : 102}
                 rx={6}
                 fill={pants}
-                stroke={c.girl ? '#cbd5e1' : '#4b5563'}
+                stroke={outfit ? 'rgba(0,0,0,0.25)' : c.girl ? '#cbd5e1' : '#4b5563'}
                 strokeWidth={1.5}
               />
               <rect x={hx - 11} y={-13} width={24} height={13} rx={6} fill="#1f2937" />
@@ -701,12 +882,20 @@ export const Character: React.FC<CharProps> = ({
         )}
 
         {/* badan + dasi abu-abu */}
-        <rect x={-28 * sw} y={-202} width={56 * sw} height={96} rx={12} fill="#fff" stroke="#cbd5e1" strokeWidth={2} />
+        <path d={torsoD} fill={topFill} stroke={outfit ? "rgba(0,0,0,0.25)" : "#cbd5e1"} strokeWidth={2} />
+        {!outfit && (
+          <>
         <path d="M-12,-202 L0,-186 L12,-202 Z" fill="#e5e7eb" />
         <path d="M-5,-198 L5,-198 L7,-190 L-7,-190 Z" fill="#6b7280" stroke="#4b5563" strokeWidth={1} />
         <path d="M-7,-190 L7,-190 L9,-150 L0,-140 L-9,-150 Z" fill="#6b7280" stroke="#4b5563" strokeWidth={1.2} />
-        <circle cx={18 * sw} cy={-172} r={5} fill="#ef4444" />
-        {c.girl ? (
+        {/* lencana OSIS: tameng coklat */}
+        <g transform={`translate(${18 * sw},-172)`}>
+          <path d="M0,-9 L8,-6 L8,3 Q8,9 0,13 Q-8,9 -8,3 L-8,-6 Z" fill="#8b5a2b" stroke="#5a3a1a" strokeWidth={1.5} />
+          <path d="M0,-5 L4.5,-3.5 L4.5,2 Q4.5,5.5 0,8 Q-4.5,5.5 -4.5,2 L-4.5,-3.5 Z" fill="#d9a35f" />
+        </g>
+          </>
+        )}
+        {outfit?.bottom ? null : c.girl ? (
           <path
             d={`M-30,-118 L30,-118 L40,${skirtBottom} L-40,${skirtBottom} Z`}
             fill="#6b7280"
@@ -714,9 +903,28 @@ export const Character: React.FC<CharProps> = ({
             strokeWidth={1.5}
           />
         ) : (
-          <rect x={-28 * sw} y={-114} width={56 * sw} height={10} rx={3} fill="#4b5563" />
+          <rect x={-bw} y={-114} width={2 * bw} height={10} rx={3} fill="#4b5563" />
         )}
         <rect x={-8} y={-216} width={16} height={18} fill={c.skin} />
+        {c.coat === 'lab' && (
+          <g>
+            <path d={`M${-tw - 6},-204 L-9,-204 L-14,-56 L${-tw - 6},-56 Z`} fill="#fff" stroke="#cbd5e1" strokeWidth={2} />
+            <path d={`M${tw + 6},-204 L9,-204 L14,-56 L${tw + 6},-56 Z`} fill="#fff" stroke="#cbd5e1" strokeWidth={2} />
+            <rect x={-tw} y={-150} width={14} height={16} fill="none" stroke="#cbd5e1" strokeWidth={2} />
+          </g>
+        )}
+        {c.coat === 'robe' && (
+          <g>
+            <path
+              d={`M${-tw - 8},-204 L${tw + 8},-204 L${tw + 14},-22 L${-tw - 14},-22 Z`}
+              fill="#bfdbfe"
+              stroke="#93c5fd"
+              strokeWidth={2}
+            />
+            <line x1={0} y1={-190} x2={0} y2={-22} stroke="#93c5fd" strokeWidth={2} />
+            <path d="M-14,-204 L0,-182 L14,-204 Z" fill="#dbeafe" stroke="#93c5fd" strokeWidth={1.5} />
+          </g>
+        )}
 
         {arm(-1, angL)}
         {arm(1, angR)}
@@ -738,7 +946,7 @@ export const Character: React.FC<CharProps> = ({
           <circle cx={0} cy={-245} r={faceR} fill={c.skin} stroke="#e0b48f" strokeWidth={1.5} />
           {fury > 0 && <circle cx={0} cy={-245} r={faceR} fill="#ef4444" opacity={fury * 0.72} />}
 
-          <g transform={`translate(${look},0)`}>
+          <g transform={`translate(${look},${-lookUp * 7})`}>
             {(expr === 'blush' || expr === 'happy') && (
               <>
                 <ellipse cx={-25} cy={-234} rx={8} ry={5} fill="#fb7185" opacity={expr === 'blush' ? 0.7 : 0.18} />
@@ -774,10 +982,26 @@ export const Character: React.FC<CharProps> = ({
             />
           )}
 
+          {triangle && (
+            <g>
+              <circle cx={24} cy={-276} r={16 + Math.sin(f * 0.2) * 3} fill="rgba(255,255,255,0.35)" />
+              <polygon points="24,-292 35,-270 13,-270" fill="#9ca3af" stroke="#4b5563" strokeWidth={2} />
+            </g>
+          )}
+
           {c.glasses && (
-            <g transform={`translate(${look},0)`} stroke={c.glasses} strokeWidth={3} fill="rgba(186,230,253,0.25)">
-              <circle cx={-15} cy={-248} r={12} />
-              <circle cx={15} cy={-248} r={12} />
+            <g transform={`translate(${look},${-lookUp * 7})`} stroke={c.glasses} strokeWidth={3} fill="rgba(186,230,253,0.25)">
+              {c.glassShape === 'square' ? (
+                <>
+                  <rect x={-28} y={-258} width={26} height={20} rx={3} />
+                  <rect x={2} y={-258} width={26} height={20} rx={3} />
+                </>
+              ) : (
+                <>
+                  <circle cx={-15} cy={-248} r={12} />
+                  <circle cx={15} cy={-248} r={12} />
+                </>
+              )}
               <line x1={-3} y1={-249} x2={3} y2={-249} />
               <line x1={-27} y1={-250} x2={-37} y2={-252} />
               <line x1={27} y1={-250} x2={37} y2={-252} />
