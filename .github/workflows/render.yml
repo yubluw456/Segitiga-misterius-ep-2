@@ -14,8 +14,11 @@ jobs:
         with:
           node-version: 20
       - run: npm install
-      - run: npx remotion render src/index.ts SegitigaMisteriusEp3 out/episode3.mp4
+      - run: npx remotion still src/index.ts CastPreview out/cast.png
+      - run: npx remotion render src/index.ts SegitigaMisteriusProlog out/prolog.mp4
       - uses: actions/upload-artifact@v4
         with:
-          name: episode3
-          path: out/episode3.mp4
+          name: hasil
+          path: |
+            out/cast.png
+            out/prolog.mp4
